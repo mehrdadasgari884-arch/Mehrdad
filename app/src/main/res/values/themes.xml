@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.WalletFinder" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/btc_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/btc_orange_container</item>
+        <item name="colorOnPrimaryContainer">@color/btc_orange_dark</item>
+        <item name="colorSecondary">@color/btc_orange_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/btc_orange_dark</item>
+    </style>
+</resources>
