@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:tabIndicatorColor="?attr/colorOnPrimary"
+            app:tabMode="scrollable"
             app:tabSelectedTextColor="?attr/colorOnPrimary"
             app:tabTextColor="#CCFFFFFF" />
 

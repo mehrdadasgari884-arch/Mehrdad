@@ -32,12 +32,19 @@ class ScanFragment : Fragment() {
     private lateinit var btnPick: MaterialButton
     private lateinit var btnStop: MaterialButton
     private lateinit var recycler: RecyclerView
+    private lateinit var btnExport: MaterialButton
     private lateinit var adapter: ResultsAdapter
     private var scanning = false
+    private var lastReport: ScanReport? = null
 
     private val pickFolder =
         registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
             if (uri != null) startScan(uri)
+        }
+
+    private val createReport =
+        registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
+            if (uri != null) writeReport(uri)
         }
 
     override fun onCreateView(
@@ -48,6 +55,7 @@ class ScanFragment : Fragment() {
         tvStatus = view.findViewById(R.id.tvStatus)
         btnPick = view.findViewById(R.id.btnPickFolder)
         btnStop = view.findViewById(R.id.btnStop)
+        btnExport = view.findViewById(R.id.btnExport)
         recycler = view.findViewById(R.id.recycler)
 
         adapter = ResultsAdapter(::onItemClicked)
@@ -59,6 +67,17 @@ class ScanFragment : Fragment() {
         }
         btnStop.setOnClickListener { scanJob?.cancel() }
         btnStop.visibility = View.GONE
+
+        btnExport.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.export_confirm_title)
+                .setMessage(R.string.export_confirm_body)
+                .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                    createReport.launch(getString(R.string.export_filename))
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
     }
 
     private var scanJob: kotlinx.coroutines.Job? = null
@@ -104,6 +123,8 @@ class ScanFragment : Fragment() {
     }
 
     private fun showResults(report: ScanReport) {
+        lastReport = report
+        btnExport.visibility = View.VISIBLE
         val rows = mutableListOf<ResultsAdapter.Row>()
         if (report.walletFiles.isNotEmpty()) {
             rows += ResultsAdapter.Row.Header(getString(R.string.section_wallet_files))
@@ -164,6 +185,39 @@ class ScanFragment : Fragment() {
     private fun copyToClipboard(text: String) {
         val cm = ContextCompat.getSystemService(requireContext(), ClipboardManager::class.java)
         cm?.setPrimaryClip(ClipData.newPlainText("wallet", text))
+    }
+
+    private fun writeReport(uri: android.net.Uri) {
+        val report = lastReport ?: return
+        val sb = StringBuilder()
+        val date = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US)
+            .format(java.util.Date())
+        sb.append(getString(R.string.export_header)).append("\n")
+        sb.append(date).append("\n")
+        sb.append(getString(
+            R.string.scan_done, report.filesScanned, report.walletFiles.size, report.seeds.size
+        )).append("\n\n")
+
+        sb.append("== ").append(getString(R.string.section_wallet_files)).append(" ==\n")
+        if (report.walletFiles.isEmpty()) sb.append("-\n")
+        for (f in report.walletFiles) {
+            sb.append("- [").append(f.kind).append("] ").append(f.name)
+                .append("  |  ").append(f.path).append("\n")
+        }
+        sb.append("\n== ").append(getString(R.string.section_seeds)).append(" ==\n")
+        if (report.seeds.isEmpty()) sb.append("-\n")
+        for (s in report.seeds) {
+            sb.append("- ").append(s.filePath).append("\n")
+            sb.append("  ").append(s.words.joinToString(" ")).append("\n")
+        }
+        try {
+            requireContext().contentResolver.openOutputStream(uri)?.use { os ->
+                os.write(sb.toString().toByteArray(Charsets.UTF_8))
+            }
+            Snackbar.make(requireView(), R.string.export_saved, Snackbar.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Snackbar.make(requireView(), R.string.export_error, Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     private fun formatSize(bytes: Long): String = when {

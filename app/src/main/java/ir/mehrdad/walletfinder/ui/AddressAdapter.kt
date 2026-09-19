@@ -9,19 +9,42 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import ir.mehrdad.walletfinder.R
 
-/** Derived addresses from a validated seed phrase, with copy + optional balance check. */
+/**
+ * Derived addresses (from a seed phrase or a WIF key) with copy + balance check.
+ * Balance/loading states are tracked per address so they survive recycling.
+ */
 class AddressAdapter(
     private val onCopy: (String) -> Unit,
-    private val onBalance: (VH, Row) -> Unit
+    private val onBalance: (Row) -> Unit
 ) : RecyclerView.Adapter<AddressAdapter.VH>() {
 
     data class Row(val label: String, val path: String, val address: String)
 
     private var rows: List<Row> = emptyList()
+    private val balances = HashMap<String, String>()
+    private val loading = HashSet<String>()
 
     fun submit(newRows: List<Row>) {
         rows = newRows
+        balances.clear()
+        loading.clear()
         notifyDataSetChanged()
+    }
+
+    fun setLoading(address: String, isLoading: Boolean) {
+        if (isLoading) loading.add(address) else loading.remove(address)
+        refresh(address)
+    }
+
+    fun setBalance(address: String, text: String) {
+        balances[address] = text
+        loading.remove(address)
+        refresh(address)
+    }
+
+    private fun refresh(address: String) {
+        val i = rows.indexOfFirst { it.address == address }
+        if (i >= 0) notifyItemChanged(i)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
@@ -31,35 +54,27 @@ class AddressAdapter(
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val row = rows[position]
-        holder.bind(row, onCopy, onBalance)
+        holder.tvLabel.text = row.label
+        holder.tvAddress.text = row.address
+        val balance = balances[row.address]
+        if (balance != null) {
+            holder.tvBalance.text = balance
+            holder.tvBalance.visibility = View.VISIBLE
+        } else {
+            holder.tvBalance.visibility = View.GONE
+        }
+        holder.progress.visibility = if (loading.contains(row.address)) View.VISIBLE else View.GONE
+        holder.btnBalance.isEnabled = !loading.contains(row.address)
+        holder.btnCopy.setOnClickListener { onCopy(row.address) }
+        holder.btnBalance.setOnClickListener { onBalance(row) }
     }
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
-        private val tvLabel: TextView = view.findViewById(R.id.tvLabel)
-        private val tvAddress: TextView = view.findViewById(R.id.tvAddress)
-        private val tvBalance: TextView = view.findViewById(R.id.tvBalance)
-        private val btnCopy: MaterialButton = view.findViewById(R.id.btnCopy)
-        private val btnBalance: MaterialButton = view.findViewById(R.id.btnBalance)
-        private val progress: CircularProgressIndicator = view.findViewById(R.id.balanceProgress)
-
-        fun bind(row: Row, onCopy: (String) -> Unit, onBalance: (VH, Row) -> Unit) {
-            tvLabel.text = row.label
-            tvAddress.text = row.address
-            tvBalance.text = ""
-            tvBalance.visibility = View.GONE
-            progress.visibility = View.GONE
-            btnCopy.setOnClickListener { onCopy(row.address) }
-            btnBalance.setOnClickListener { onBalance(this, row) }
-        }
-
-        fun setLoading(loading: Boolean) {
-            progress.visibility = if (loading) View.VISIBLE else View.GONE
-            btnBalance.isEnabled = !loading
-        }
-
-        fun setBalance(text: String) {
-            tvBalance.text = text
-            tvBalance.visibility = View.VISIBLE
-        }
+        val tvLabel: TextView = view.findViewById(R.id.tvLabel)
+        val tvAddress: TextView = view.findViewById(R.id.tvAddress)
+        val tvBalance: TextView = view.findViewById(R.id.tvBalance)
+        val btnCopy: MaterialButton = view.findViewById(R.id.btnCopy)
+        val btnBalance: MaterialButton = view.findViewById(R.id.btnBalance)
+        val progress: CircularProgressIndicator = view.findViewById(R.id.balanceProgress)
     }
 }

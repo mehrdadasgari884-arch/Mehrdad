@@ -26,6 +26,15 @@
             android:text="@string/stop_scan" />
     </LinearLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnExport"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/btn_export_report"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"

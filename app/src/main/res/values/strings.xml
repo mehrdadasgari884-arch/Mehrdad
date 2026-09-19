@@ -4,6 +4,7 @@
 
     <string name="tab_scan">جستجوی فایل‌ها</string>
     <string name="tab_seed">عبارت بازیابی</string>
+    <string name="tab_keys">کلید و آدرس</string>
     <string name="tab_guide">راهنما و امنیت</string>
 
     <!-- Scanner -->
@@ -26,23 +27,51 @@
     <string name="dialog_copy_path">کپی مسیر</string>
     <string name="dialog_copy_phrase">کپی عبارت</string>
     <string name="copied">کپی شد</string>
+    <string name="btn_export_report">ذخیرهٔ گزارش جستجو</string>
+    <string name="export_confirm_title">ذخیرهٔ گزارش</string>
+    <string name="export_confirm_body">گزارش شامل مسیر فایل‌ها و عبارت‌های بازیابی پیدا شده است. فقط در محل امنی ذخیره‌اش کنید.</string>
+    <string name="export_saved">گزارش ذخیره شد ✔</string>
+    <string name="export_error">خطا در ذخیرهٔ گزارش</string>
+    <string name="export_filename">wallet-finder-report.txt</string>
+    <string name="export_header">ولت‌یاب بیت‌کوین — گزارش جستجو</string>
 
     <!-- Seed check -->
     <string name="seed_hint">عبارت بازیابی (۱۲، ۱۵، ۱۸، ۲۱ یا ۲۴ کلمه، با فاصله)</string>
     <string name="passphrase_hint">گذرواژهٔ اضافی (اختیاری — اگر کیف پولتان با passphrase ساخته شده)</string>
     <string name="btn_check">بررسی اعتبار و ساخت آدرس‌ها</string>
+    <string name="btn_check_all">بررسی موجودی همهٔ آدرس‌ها</string>
     <string name="seed_enter_first">ابتدا عبارت بازیابی را وارد کنید.</string>
     <string name="seed_unknown_word">کلمهٔ «%1$s» در فهرست استاندارد کلمات (BIP-39) وجود ندارد. املای آن را بررسی کنید.</string>
     <string name="seed_bad_count">تعداد کلمات %1$d است؛ عبارت بازیابی باید ۱۲، ۱۵، ۱۸، ۲۱ یا ۲۴ کلمه باشد.</string>
     <string name="seed_bad_checksum">❌ کلمات همگی معتبرند اما کنترل صحت (چک‌سام) عبارت اشتباه است. یعنی حداقل یک کلمه جا افتاده یا اشتباه است.</string>
     <string name="seed_valid">✅ عبارت %1$d کلمه‌ای کاملاً معتبر است. آدرس‌های مشتق‌شده از آن (حساب اول):</string>
     <string name="addr_segwit">سگویت (bc1)</string>
+    <string name="addr_p2sh">سگویت تودرتو (3…)</string>
     <string name="addr_legacy">کلاسیک (1…)</string>
     <string name="btn_copy">کپی</string>
     <string name="btn_balance">موجودی</string>
     <string name="balance_result">%1$d ساتوشی (%2$s BTC) • %3$d تراکنش</string>
     <string name="balance_error">خطا در دریافت موجودی (اینترنت را بررسی کنید)</string>
     <string name="seed_warning">🔒 همهٔ محاسبات روی خود دستگاه انجام می‌شود. فقط وقتی دکمهٔ «موجودی» را بزنید، آدرسِ عمومی (نه عبارت شما) برای استعلام به سایت عمومی mempool.space فرستاده می‌شود. عبارت بازیابی را هرگز در اختیار هیچ اپ، سایت یا شخصی قرار ندهید.</string>
+
+    <!-- Key & address tools -->
+    <string name="keys_title_wif">🔑 کلید خصوصی (WIF)</string>
+    <string name="keys_wif_desc">اگر کلید خصوصی قدیمی به‌صورت متنی دارید (با 5 شروع می‌شود و ~51 نویسه است، یا با K/L شروع می‌شود و ~52 نویسه)، آن را اینجا بگذارید تا آدرس‌هایش ساخته شود.</string>
+    <string name="keys_hint_wif">کلید خصوصی (مثلاً 5K… یا Kw…)</string>
+    <string name="btn_wif_convert">تبدیل به آدرس</string>
+    <string name="wif_enter_first">ابتدا کلید خصوصی را وارد کنید.</string>
+    <string name="wif_invalid">❌ این یک کلید WIF معتبر نیست (ساختار یا چک‌سام اشتباه است).</string>
+    <string name="wif_testnet">این کلید مربوط به شبکهٔ آزمایشی (testnet) است، نه بیت‌کوین اصلی.</string>
+    <string name="wif_ok_compressed">✅ کلید معتبر است (نوع فشرده). آدرس‌های ممکن:</string>
+    <string name="wif_ok_uncompressed">✅ کلید معتبر است (نوع غیرفشرده — فقط آدرس کلاسیک دارد؛ کلیدهای قدیمی این‌گونه‌اند).</string>
+    <string name="keys_title_address">🔎 استعلام موجودی آدرس</string>
+    <string name="keys_address_desc">هر آدرس بیت‌کوین عمومی (1…، 3… یا bc1…) را وارد کنید تا موجودی و تعداد تراکنش‌هایش را ببینید.</string>
+    <string name="keys_hint_address">آدرس بیت‌کوین</string>
+    <string name="btn_addr_balance">استعلام موجودی</string>
+    <string name="addr_enter_first">ابتدا آدرس را وارد کنید.</string>
+    <string name="addr_invalid">❌ ساختار آدرس معتبر نیست.</string>
+    <string name="addr_checking">در حال استعلام…</string>
+    <string name="keys_warning">⚠️ کلید خصوصی و عبارت بازیابی را هرگز با کسی به اشتراک نگذارید و در اپ یا سایت ناشناس وارد نکنید. این بخش هم مثل بقیهٔ اپ، محاسبات را فقط روی دستگاه شما انجام می‌دهد.</string>
 
     <!-- Guide -->
     <string name="guide_title">این اپ چه کاری انجام می‌دهد؟</string>

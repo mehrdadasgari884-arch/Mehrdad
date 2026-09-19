@@ -59,11 +59,23 @@ object Secp256k1 {
     fun serializeCompressed(pt: EcPoint): ByteArray {
         val out = ByteArray(33)
         out[0] = if (pt.y.testBit(0)) 0x03 else 0x02
-        val x = pt.x.toByteArray()
-        val srcOff = maxOf(0, x.size - 32)
-        val dstOff = 1 + maxOf(0, 32 - x.size)
-        System.arraycopy(x, srcOff, out, dstOff, minOf(32, x.size))
+        copy32(pt.x.toByteArray(), out, 1)
         return out
+    }
+
+    /** SEC1 uncompressed serialization (65 bytes: 0x04 + x + y). */
+    fun serializeUncompressed(pt: EcPoint): ByteArray {
+        val out = ByteArray(65)
+        out[0] = 0x04
+        copy32(pt.x.toByteArray(), out, 1)
+        copy32(pt.y.toByteArray(), out, 33)
+        return out
+    }
+
+    private fun copy32(src: ByteArray, dst: ByteArray, dstOff: Int) {
+        val srcOff = maxOf(0, src.size - 32)
+        val at = dstOff + maxOf(0, 32 - src.size)
+        System.arraycopy(src, srcOff, dst, at, minOf(32, src.size))
     }
 
     /** Compressed public key for private key scalar k. */

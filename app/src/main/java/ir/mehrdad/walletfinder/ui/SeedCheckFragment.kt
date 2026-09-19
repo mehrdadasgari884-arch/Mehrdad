@@ -30,9 +30,13 @@ class SeedCheckFragment : Fragment() {
     private lateinit var etPhrase: EditText
     private lateinit var etPassphrase: EditText
     private lateinit var btnCheck: MaterialButton
+    private lateinit var btnCheckAll: MaterialButton
     private lateinit var tvResult: TextView
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: AddressAdapter
+
+    private var currentRows: List<AddressAdapter.Row> = emptyList()
+    private var checkingAll = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,6 +46,7 @@ class SeedCheckFragment : Fragment() {
         etPhrase = view.findViewById(R.id.etPhrase)
         etPassphrase = view.findViewById(R.id.etPassphrase)
         btnCheck = view.findViewById(R.id.btnCheck)
+        btnCheckAll = view.findViewById(R.id.btnCheckAll)
         tvResult = view.findViewById(R.id.tvResult)
         recycler = view.findViewById(R.id.recyclerAddresses)
 
@@ -50,13 +55,17 @@ class SeedCheckFragment : Fragment() {
         recycler.adapter = adapter
 
         btnCheck.setOnClickListener { checkPhrase() }
+        btnCheckAll.setOnClickListener { checkAllBalances() }
+        btnCheckAll.visibility = View.GONE
     }
 
     private fun checkPhrase() {
         val bip39 = Bip39.get(requireContext())
         val raw = etPhrase.text.toString().trim()
         val words = raw.lowercase().split(Regex("\\s+")).filter { it.isNotEmpty() }
+        currentRows = emptyList()
         adapter.submit(emptyList())
+        btnCheckAll.visibility = View.GONE
 
         if (words.isEmpty()) {
             tvResult.setText(R.string.seed_enter_first)
@@ -83,7 +92,9 @@ class SeedCheckFragment : Fragment() {
             val rows = withContext(Dispatchers.Default) {
                 buildAddressRows(bip39, words, passphrase)
             }
+            currentRows = rows
             adapter.submit(rows)
+            btnCheckAll.visibility = View.VISIBLE
         }
     }
 
@@ -96,23 +107,22 @@ class SeedCheckFragment : Fragment() {
         val seed = bip39.toSeed(mnemonic, passphrase)
         val root = HdNode.fromSeed(seed)
         val rows = mutableListOf<AddressAdapter.Row>()
-        for (i in 0..1) {
-            val path = DerivationPaths.receiving(DerivationPaths.BIP84_ACCOUNT, i)
-            val pub = root.derivePath(path).publicKey()
-            rows += AddressAdapter.Row(
-                label = getString(R.string.addr_segwit) + " ${i + 1}",
-                path = path,
-                address = Addresses.p2wpkh(pub)
-            )
-        }
-        for (i in 0..1) {
-            val path = DerivationPaths.receiving(DerivationPaths.BIP44_ACCOUNT, i)
-            val pub = root.derivePath(path).publicKey()
-            rows += AddressAdapter.Row(
-                label = getString(R.string.addr_legacy) + " ${i + 1}",
-                path = path,
-                address = Addresses.p2pkh(pub)
-            )
+
+        val types: List<Triple<String, Int, (ByteArray) -> String>> = listOf(
+            Triple(DerivationPaths.BIP84_ACCOUNT, R.string.addr_segwit) { pub -> Addresses.p2wpkh(pub) },
+            Triple(DerivationPaths.BIP49_ACCOUNT, R.string.addr_p2sh) { pub -> Addresses.p2shP2wpkh(pub) },
+            Triple(DerivationPaths.BIP44_ACCOUNT, R.string.addr_legacy) { pub -> Addresses.p2pkh(pub) }
+        )
+        for ((account, labelRes, encode) in types) {
+            for (i in 0..1) {
+                val path = DerivationPaths.receiving(account, i)
+                val pub = root.derivePath(path).publicKey()
+                rows += AddressAdapter.Row(
+                    label = getString(labelRes) + " ${i + 1}",
+                    path = path,
+                    address = encode(pub)
+                )
+            }
         }
         return rows
     }
@@ -123,28 +133,42 @@ class SeedCheckFragment : Fragment() {
         Snackbar.make(requireView(), R.string.copied, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun checkBalance(holder: AddressAdapter.VH, row: AddressAdapter.Row) {
-        holder.setLoading(true)
+    private fun checkBalance(row: AddressAdapter.Row) {
+        adapter.setLoading(row.address, true)
         viewLifecycleOwner.lifecycleScope.launch {
             val outcome = withContext(Dispatchers.IO) {
                 runCatching { BalanceChecker.fetch(row.address) }
             }
-            outcome.fold(
-                onSuccess = { info ->
-                    holder.setBalance(
-                        getString(
-                            R.string.balance_result,
-                            info.balanceSats,
-                            String.format("%.8f", info.balanceSats / 100_000_000.0),
-                            info.txCount
-                        )
-                    )
-                },
-                onFailure = {
-                    holder.setBalance(getString(R.string.balance_error))
-                }
-            )
-            holder.setLoading(false)
+            adapter.setBalance(row.address, balanceText(outcome))
         }
     }
+
+    private fun checkAllBalances() {
+        if (checkingAll || currentRows.isEmpty()) return
+        checkingAll = true
+        btnCheckAll.isEnabled = false
+        viewLifecycleOwner.lifecycleScope.launch {
+            for (row in currentRows) {
+                adapter.setLoading(row.address, true)
+                val outcome = withContext(Dispatchers.IO) {
+                    runCatching { BalanceChecker.fetch(row.address) }
+                }
+                adapter.setBalance(row.address, balanceText(outcome))
+            }
+            checkingAll = false
+            btnCheckAll.isEnabled = true
+        }
+    }
+
+    private fun balanceText(outcome: Result<BalanceChecker.Info>): String = outcome.fold(
+        onSuccess = { info ->
+            getString(
+                R.string.balance_result,
+                info.balanceSats,
+                String.format("%.8f", info.balanceSats / 100_000_000.0),
+                info.txCount
+            )
+        },
+        onFailure = { getString(R.string.balance_error) }
+    )
 }
