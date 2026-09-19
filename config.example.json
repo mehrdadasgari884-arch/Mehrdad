@@ -1,0 +1,53 @@
+{
+  "target": {
+    "username": "Sety_bozorg",
+    "track_followers": true,
+    "track_engagement": true
+  },
+  "growth": {
+    "hashtags": ["persian", "iran", "lifestyle", "tehran", "sety", "bozorg"],
+    "locations": [],
+    "competitors": ["competitor1", "competitor2"],
+    "interact_with_followers_of_target": true,
+    "interact_with_likers_of_target": true
+  },
+  "comments": {
+    "templates": [
+      "🔥 عالیه داداش 👏",
+      "محشره ❤️",
+      "دست مریزاد 🙌",
+      "خیلی خفنه 😍",
+      "Nice one! 🔥",
+      "Love this! ❤️"
+    ],
+    "use_persian": true,
+    "ai_generated": false
+  },
+  "dm": {
+    "welcome_message": "سلام رفیق! مرسی که فالو کردی 🙏❤️\nپیج @Sety_bozorg رو دنبال کن!",
+    "auto_reply_enabled": false,
+    "keywords": {
+      "سلام": "سلام عزیز! چطوری؟ ❤️",
+      "قیمت": "برای قیمت دایرکت بده به @Sety_bozorg"
+    }
+  },
+  "scheduler": {
+    "posts": [
+      {
+        "file": "content/post1.jpg",
+        "caption": "New post 🔥 @Sety_bozorg #persian",
+        "time": "18:00",
+        "days": ["monday", "wednesday", "friday"]
+      }
+    ]
+  },
+  "safety": {
+    "min_delay_seconds": 25,
+    "max_delay_seconds": 90,
+    "sleep_after_100_actions_minutes": 10,
+    "dont_interact_with_private": false,
+    "dont_interact_with_verified": false,
+    "min_followers_to_interact": 10,
+    "max_followers_to_interact": 15000
+  }
+}
