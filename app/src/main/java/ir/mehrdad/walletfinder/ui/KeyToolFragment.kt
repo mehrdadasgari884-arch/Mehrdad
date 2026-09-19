@@ -136,6 +136,29 @@ class KeyToolFragment : Fragment() {
         }
     }
 
+    private fun checkBalance(row: AddressAdapter.Row) {
+        wifAdapter.setLoading(row.address, true)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val outcome = withContext(Dispatchers.IO) {
+                runCatching { BalanceChecker.fetch(row.address) }
+            }
+            wifAdapter.setBalance(
+                row.address,
+                outcome.fold(
+                    onSuccess = { info ->
+                        getString(
+                            R.string.balance_result,
+                            info.balanceSats,
+                            String.format("%.8f", info.balanceSats / 100_000_000.0),
+                            info.txCount
+                        )
+                    },
+                    onFailure = { getString(R.string.balance_error) }
+                )
+            )
+        }
+    }
+
     private fun copyText(text: String) {
         val cm = ContextCompat.getSystemService(requireContext(), ClipboardManager::class.java)
         cm?.setPrimaryClip(ClipData.newPlainText("wallet", text))
