@@ -109,9 +109,9 @@ class SeedCheckFragment : Fragment() {
         val rows = mutableListOf<AddressAdapter.Row>()
 
         val types: List<Triple<String, Int, (ByteArray) -> String>> = listOf(
-            Triple(DerivationPaths.BIP84_ACCOUNT, R.string.addr_segwit) { pub -> Addresses.p2wpkh(pub) },
-            Triple(DerivationPaths.BIP49_ACCOUNT, R.string.addr_p2sh) { pub -> Addresses.p2shP2wpkh(pub) },
-            Triple(DerivationPaths.BIP44_ACCOUNT, R.string.addr_legacy) { pub -> Addresses.p2pkh(pub) }
+            Triple(DerivationPaths.BIP84_ACCOUNT, R.string.addr_segwit, { pub: ByteArray -> Addresses.p2wpkh(pub) }),
+            Triple(DerivationPaths.BIP49_ACCOUNT, R.string.addr_p2sh, { pub: ByteArray -> Addresses.p2shP2wpkh(pub) }),
+            Triple(DerivationPaths.BIP44_ACCOUNT, R.string.addr_legacy, { pub: ByteArray -> Addresses.p2pkh(pub) })
         )
         for ((account, labelRes, encode) in types) {
             for (i in 0..1) {

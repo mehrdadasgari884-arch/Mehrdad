@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,12 +26,14 @@ jobs:
 
       - name: Build debug APK
         env:
-          GH_TOKEN: ${{ github.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if ./gradlew assembleDebug --no-daemon --stacktrace > build.log 2>&1; then
+            tail -n 25 build.log
             echo "BUILD_OK"
           else
-            echo "BUILD FAILED — posting error tail as commit comment"
+            echo "=== BUILD FAILED — gradle error tail: ==="
+            tail -c 12000 build.log
             body=$(printf '🚨 **CI build failed — gradle error tail:**\n\n```\n%s\n```' "$(tail -c 12000 build.log)")
             gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" \
               -f body="$body" --silent || true
