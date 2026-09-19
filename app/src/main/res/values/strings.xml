@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ولت‌یاب بیت‌کوین</string>
+
+    <string name="tab_scan">جستجوی فایل‌ها</string>
+    <string name="tab_seed">عبارت بازیابی</string>
+    <string name="tab_keys">کلید و آدرس</string>
+    <string name="tab_guide">راهنما و امنیت</string>
+
+    <!-- Scanner -->
+    <string name="pick_folder">انتخاب پوشه برای جستجو</string>
+    <string name="stop_scan">توقف</string>
+    <string name="scan_starting">در حال آماده‌سازی جستجو…</string>
+    <string name="scan_progress">در حال جستجو… %1$d فایل بررسی شد\n%2$s</string>
+    <string name="scan_done">جستجو تمام شد: %1$d فایل بررسی شد • %2$d فایل کیف پول • %3$d عبارت بازیابی پیدا شد</string>
+    <string name="scan_truncated_note">\n(به سقف تعداد فایل‌های قابل بررسی رسیدیم؛ می‌توانید پوشه‌های کوچک‌تر را جداگانه جستجو کنید)</string>
+    <string name="scan_nothing_hint">چیزی پیدا نشد. پوشه‌های دیگری مثل Downloads، Documents یا پوشهٔ پشتیبان‌های قدیمی را هم امتحان کنید.</string>
+    <string name="scan_error">خطا در جستجو. دوباره تلاش کنید.</string>
+    <string name="scan_stopped">جستجو متوقف شد.</string>
+    <string name="section_wallet_files">فایل‌های کیف پول</string>
+    <string name="section_seeds">عبارت‌های بازیابی پیدا شده</string>
+    <string name="seed_item_title">عبارت %1$d کلمه‌ای: %2$s</string>
+    <string name="seed_found_title">⚠️ عبارت بازیابی پیدا شد</string>
+    <string name="dialog_seed_body">این عبارت، کلید کامل یک کیف پول است!\nمحل: %1$s\nهرگز آن را با هیچ‌کس به اشتراک نگذارید و در اپ یا سایت ناشناخته وارد نکنید.\nمتن کامل عبارت:</string>
+    <string name="dialog_file_body">نوع: %1$s\nمسیر: %2$s\nاندازه: %3$s\n\n%4$s</string>
+    <string name="dialog_ok">باشه</string>
+    <string name="dialog_copy_path">کپی مسیر</string>
+    <string name="dialog_copy_phrase">کپی عبارت</string>
+    <string name="copied">کپی شد</string>
+    <string name="btn_export_report">ذخیرهٔ گزارش جستجو</string>
+    <string name="export_confirm_title">ذخیرهٔ گزارش</string>
+    <string name="export_confirm_body">گزارش شامل مسیر فایل‌ها و عبارت‌های بازیابی پیدا شده است. فقط در محل امنی ذخیره‌اش کنید.</string>
+    <string name="export_saved">گزارش ذخیره شد ✔</string>
+    <string name="export_error">خطا در ذخیرهٔ گزارش</string>
+    <string name="export_filename">wallet-finder-report.txt</string>
+    <string name="export_header">ولت‌یاب بیت‌کوین — گزارش جستجو</string>
+
+    <!-- Seed check -->
+    <string name="seed_hint">عبارت بازیابی (۱۲، ۱۵، ۱۸، ۲۱ یا ۲۴ کلمه، با فاصله)</string>
+    <string name="passphrase_hint">گذرواژهٔ اضافی (اختیاری — اگر کیف پولتان با passphrase ساخته شده)</string>
+    <string name="btn_check">بررسی اعتبار و ساخت آدرس‌ها</string>
+    <string name="btn_check_all">بررسی موجودی همهٔ آدرس‌ها</string>
+    <string name="seed_enter_first">ابتدا عبارت بازیابی را وارد کنید.</string>
+    <string name="seed_unknown_word">کلمهٔ «%1$s» در فهرست استاندارد کلمات (BIP-39) وجود ندارد. املای آن را بررسی کنید.</string>
+    <string name="seed_bad_count">تعداد کلمات %1$d است؛ عبارت بازیابی باید ۱۲، ۱۵، ۱۸، ۲۱ یا ۲۴ کلمه باشد.</string>
+    <string name="seed_bad_checksum">❌ کلمات همگی معتبرند اما کنترل صحت (چک‌سام) عبارت اشتباه است. یعنی حداقل یک کلمه جا افتاده یا اشتباه است.</string>
+    <string name="seed_valid">✅ عبارت %1$d کلمه‌ای کاملاً معتبر است. آدرس‌های مشتق‌شده از آن (حساب اول):</string>
+    <string name="addr_segwit">سگویت (bc1)</string>
+    <string name="addr_p2sh">سگویت تودرتو (3…)</string>
+    <string name="addr_legacy">کلاسیک (1…)</string>
+    <string name="btn_copy">کپی</string>
+    <string name="btn_balance">موجودی</string>
+    <string name="balance_result">%1$d ساتوشی (%2$s BTC) • %3$d تراکنش</string>
+    <string name="balance_error">خطا در دریافت موجودی (اینترنت را بررسی کنید)</string>
+    <string name="seed_warning">🔒 همهٔ محاسبات روی خود دستگاه انجام می‌شود. فقط وقتی دکمهٔ «موجودی» را بزنید، آدرسِ عمومی (نه عبارت شما) برای استعلام به سایت عمومی mempool.space فرستاده می‌شود. عبارت بازیابی را هرگز در اختیار هیچ اپ، سایت یا شخصی قرار ندهید.</string>
+
+    <!-- Key & address tools -->
+    <string name="keys_title_wif">🔑 کلید خصوصی (WIF)</string>
+    <string name="keys_wif_desc">اگر کلید خصوصی قدیمی به‌صورت متنی دارید (با 5 شروع می‌شود و ~51 نویسه است، یا با K/L شروع می‌شود و ~52 نویسه)، آن را اینجا بگذارید تا آدرس‌هایش ساخته شود.</string>
+    <string name="keys_hint_wif">کلید خصوصی (مثلاً 5K… یا Kw…)</string>
+    <string name="btn_wif_convert">تبدیل به آدرس</string>
+    <string name="wif_enter_first">ابتدا کلید خصوصی را وارد کنید.</string>
+    <string name="wif_invalid">❌ این یک کلید WIF معتبر نیست (ساختار یا چک‌سام اشتباه است).</string>
+    <string name="wif_testnet">این کلید مربوط به شبکهٔ آزمایشی (testnet) است، نه بیت‌کوین اصلی.</string>
+    <string name="wif_ok_compressed">✅ کلید معتبر است (نوع فشرده). آدرس‌های ممکن:</string>
+    <string name="wif_ok_uncompressed">✅ کلید معتبر است (نوع غیرفشرده — فقط آدرس کلاسیک دارد؛ کلیدهای قدیمی این‌گونه‌اند).</string>
+    <string name="keys_title_address">🔎 استعلام موجودی آدرس</string>
+    <string name="keys_address_desc">هر آدرس بیت‌کوین عمومی (1…، 3… یا bc1…) را وارد کنید تا موجودی و تعداد تراکنش‌هایش را ببینید.</string>
+    <string name="keys_hint_address">آدرس بیت‌کوین</string>
+    <string name="btn_addr_balance">استعلام موجودی</string>
+    <string name="addr_enter_first">ابتدا آدرس را وارد کنید.</string>
+    <string name="addr_invalid">❌ ساختار آدرس معتبر نیست.</string>
+    <string name="addr_checking">در حال استعلام…</string>
+    <string name="keys_warning">⚠️ کلید خصوصی و عبارت بازیابی را هرگز با کسی به اشتراک نگذارید و در اپ یا سایت ناشناس وارد نکنید. این بخش هم مثل بقیهٔ اپ، محاسبات را فقط روی دستگاه شما انجام می‌دهد.</string>
+
+    <!-- Guide -->
+    <string name="guide_title">این اپ چه کاری انجام می‌دهد؟</string>
+    <string name="guide_body"><![CDATA[
+<b>ولت‌یاب بیت‌کوین</b> ابزاری برای پیدا کردن کیف پول‌های گم‌شدهٔ <b>خودتان</b> است:
+<br><br>
+<b>۱) جستجوی فایل‌ها:</b> پوشه‌ای از حافظهٔ دستگاه (مثلاً Downloads، Documents یا کارت حافظهٔ قدیمی) را انتخاب کنید تا اپ به‌صورت محلی دنبال این موارد بگردد:
+<br>• فایل <b>wallet.dat</b> مربوط به Bitcoin Core
+<br>• کیف پول‌های <b>Electrum</b> و <b>MultiBit</b>
+<br>• فایل‌های <b>.wallet</b> و <b>.key</b> و کی‌استورهای JSON
+<br>• فایل‌های حاوی کلیدهای <b>xprv / zprv</b>
+<br>• <b>عبارت‌های بازیابی ۱۲ تا ۲۴ کلمه‌ای</b> نوشته‌شده در فایل‌های متنی (با تأیید کنترل صحت)
+<br><br>
+<b>۲) بررسی عبارت بازیابی:</b> اگر عبارتی را به خاطر دارید یا پیدا کرده‌اید، آن را وارد کنید؛ اپ اعتبار آن را می‌سنجد و آدرس‌های بیت‌کوین مشتق‌شده از آن را می‌سازد تا بتوانید با استعلام موجودی مطمئن شوید همان کیف پولِ گم‌شده است.
+<br><br>
+<b>کجاها را بگردیم؟</b>
+<br>• پوشه‌های پشتیبان قدیمی، گوگل‌درایو و ایمیل‌های قدیمی
+<br>• در کامپیوتر: <i>%APPDATA%\\Bitcoin</i> (ویندوز)، <i>~/.bitcoin</i> (لینوکس/مک)
+<br>• گوشی‌ها و لپ‌تاپ‌های قدیمی و کارت‌های حافظه
+    ]]></string>
+    <string name="guide_security_title">⚠️ نکات امنیتی مهم</string>
+    <string name="guide_security_body"><![CDATA[
+• عبارت بازیابی = <b>کلید کامل پول شما</b>. هرکس آن را داشته باشد صاحب کیف پول است.
+<br>• این اپ هیچ دسترسی شبکه‌ای برای جستجوی فایل‌ها ندارد؛ همه‌چیز آفلاین و روی دستگاه خودتان انجام می‌شود.
+<br>• تنها دادهٔ ارسالی، آدرس عمومی شما برای استعلام موجودی است (آن هم فقط با لمس دکمهٔ «موجودی»).
+<br>• عبارت خود را هرگز در اپ‌ها، سایت‌ها یا ربات‌های ناشناس وارد نکنید و از آن اسکرین‌شات نگیرید.
+    ]]></string>
+    <string name="guide_honest_title">⛔ واقعیت دربارهٔ «پیدا کردن کیف پول تصادفی»</string>
+    <string name="guide_honest_body"><![CDATA[
+اپ‌هایی که ادعا می‌کنند با تولید تصادفی کلید خصوصی، کیف پول دارای موجودی پیدا می‌کنند، <b>کلاهبرداری</b> هستند. تعداد کلیدهای ممکن بیت‌کوین ۲ به توان ۲۵۶ است — عددی با ۷۸ رقم! حتی اگر تمام کامپیوترهای جهان تا پایان عمر خورشید جستجو کنند، احتمال پیدا شدن حتی یک کیف پول دارای موجودی عملاً صفر است. این اپ فقط برای بازیابی دارایی <b>خودتان</b> طراحی شده است.
+    ]]></string>
+</resources>
