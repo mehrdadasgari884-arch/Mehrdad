@@ -37,8 +37,7 @@ async def dashboard(request: Request):
         with open(config_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
 
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "dashboard.html", {
         "stats": stats,
         "target_username": target_username,
         "config": config,
